@@ -11,16 +11,18 @@ D1RIW - REDES E INFRAESTRUTURA
 ## 📦 Objetivo
 
 - [ ] Montar um Servidor Web com Linux Debian
-    - [ ] Intalar e configurar o Apache, Nginx ou outro
-    - [ ] Instalar e configurar serviço de DNS
+  - [x] Intalar e configurar o Apache, Nginx ou outro
+    - Usado o Apache
+  - [ ] Instalar e configurar serviço de DNS
 - [ ] Configurar o Banco de Dados
-    - [ ] Instalar um SGBD SQL
-    - [ ] Configurar um banco de dados simples
+  - [ ] Instalar um SGBD SQL
+  - [ ] Configurar um banco de dados simples
 - [ ] Página Web
-    - [ ] Hospedar uma página web simples
-    - [ ] Comunicar a página web com o banco de dados
+  - [x] Hospedar uma página web simples
+  - [ ] Comunicar a página web com o banco de dados
 - [ ] Opcional
-    - [ ] Utilizar Docker
+  - [x] Utilizar Docker
+    - Utilizando Docker, porém configuração inicial por hora
 
 <!-- ----------------------------------------------------------- -->
 ## 📄 Repositório Original

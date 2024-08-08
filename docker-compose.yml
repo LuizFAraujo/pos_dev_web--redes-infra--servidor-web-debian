@@ -1,0 +1,12 @@
+name: prj_web_server_debian
+
+services:
+  web:
+    build:
+      context: ./WEB
+      dockerfile: Dockerfile.WEB
+    container_name: Server
+    ports:
+      - "8080:80"
+    volumes:
+      - ./WEB/www:/var/www/html

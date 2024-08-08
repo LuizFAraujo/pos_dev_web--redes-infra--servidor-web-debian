@@ -1,0 +1,22 @@
+# Usa a imagem oficial do Debian
+FROM debian:latest
+
+# Atualiza o sistema e instala pacotes essenciais
+RUN apt-get update && apt-get upgrade -y && \
+    apt-get install -y apache2 && \
+    apt-get clean
+
+# Remover o conteúdo padrão da pasta do Apache
+RUN rm -rf /var/www/html/*
+
+# Define o diretório de trabalho (não obrigatório)
+WORKDIR /var/www/html
+
+# Copiar o conteúdo de www para o diretório do Apache
+COPY ./www/* /var/www/html/
+
+# Expor a porta 80 (não obrigatório, se utilizar o compose)
+# EXPOSE 80
+
+# Comando para iniciar o Apache
+CMD ["apache2ctl", "-D", "FOREGROUND"]
