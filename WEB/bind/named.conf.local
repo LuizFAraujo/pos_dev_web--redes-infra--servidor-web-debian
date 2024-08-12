@@ -1,0 +1,4 @@
+zone "arj.sys" {
+    type master;
+    file "/etc/bind/db.arj.sys";
+};

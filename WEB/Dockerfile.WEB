@@ -2,12 +2,34 @@
 FROM debian:latest
 
 # Atualiza o sistema e instala pacotes essenciais
-RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y apache2 && \
-    apt-get clean
+# RUN apt-get update && apt-get upgrade -y && \
+#     apt-get install -y apache2 && \
+#     apt-get clean
 
-# Remover o conteúdo padrão da pasta do Apache
-RUN rm -rf /var/www/html/*
+
+# Atualiza o sistema, instala pacotes essenciais e configura o Apache
+## Atualiza todos os pacotes para as versões mais recentes     
+RUN apt-get update && apt-get upgrade -y && \
+## Instala o servidor Apache
+    apt-get install -y apache2 \
+## Instala o Bind e utilitários
+        bind9 bind9utils dnsutils && \
+## Limpa o cache do apt para reduzir o tamanho da imagem
+    apt-get clean && \
+# Remove os arquivos de lista de pacotes para economizar espaço
+    rm -rf /var/lib/apt/lists/* && \
+# Remove o conteúdo padrão da pasta do Apache
+    rm -rf /var/www/html/*
+
+# Criar o diretório para logs e ajustar permissões
+RUN mkdir -p /var/log/bind9 && \
+    chown bind:bind /var/log/bind9 && \
+    chmod 750 /var/log/bind9
+
+    
+# Remove o conteúdo padrão da pasta do Apache
+# RUN rm -rf /var/www/html/*
+
 
 # Define o diretório de trabalho (não obrigatório)
 WORKDIR /var/www/html
@@ -15,8 +37,30 @@ WORKDIR /var/www/html
 # Copiar o conteúdo de www para o diretório do Apache
 COPY ./www/* /var/www/html/
 
-# Expor a porta 80 (não obrigatório, se utilizar o compose)
-# EXPOSE 80
+# Copia arquivos de configuração do Bind
+COPY ./bind/* /etc/bind/
+# COPY ./bind/named.conf /etc/bind/named.conf
+
+# Copia o script de inicialização
+COPY ./start.sh /start.sh
+
+# Torna o script executável
+RUN chmod +x /start.sh
+
+# Expõe portas (não obrigatório, se utilizar o compose)
+# Apache = 80  |  Bind = 53
+# EXPOSE 80 53
 
 # Comando para iniciar o Apache
-CMD ["apache2ctl", "-D", "FOREGROUND"]
+# CMD ["apache2ctl", "-D", "FOREGROUND"]
+
+# Comando para iniciar o Apache e o BIND9
+# CMD ["sh", "-c", "apache2ctl -D FOREGROUND & named -g"]
+CMD ["/start.sh"]
+
+# Teste apenas o Apache
+# CMD ["apache2ctl", "-D", "FOREGROUND"]
+
+# Teste apenas o BIND
+# CMD ["named", "-g"]
+# CMD ["named"]

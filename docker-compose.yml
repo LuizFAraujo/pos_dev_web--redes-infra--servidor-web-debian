@@ -7,6 +7,8 @@ services:
       dockerfile: Dockerfile.WEB
     container_name: Server
     ports:
-      - "8080:80"
+      - "8080:80"   # Porta para o Apache
+      - "53:53"     # Porta para o Bind9
     volumes:
       - ./WEB/www:/var/www/html
+      - ./WEB/bind:/etc/bind
